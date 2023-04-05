@@ -1,0 +1,24 @@
+apiVersion: v1
+entries:
+  deploy-chart:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-04-05T14:59:09.0526193+02:00"
+    description: A Helm chart for Kubernetes
+    digest: 3a675e58008077c7bf8f21bf72c7b4e53de9ba6ae3472f959c75723002ad30c1
+    name: deploy-chart
+    type: application
+    urls:
+    - deploy-chart-0.1.0.tgz
+    version: 0.1.0
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2023-04-05T14:59:09.053142+02:00"
+    description: A Helm chart for Kubernetes
+    digest: 3a675e58008077c7bf8f21bf72c7b4e53de9ba6ae3472f959c75723002ad30c1
+    name: deploy-chart
+    type: application
+    urls:
+    - cluster_deployment/deploy-chart-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-04-05T14:59:09.0505988+02:00"
