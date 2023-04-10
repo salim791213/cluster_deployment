@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-applicants-deployment
+  labels:
+    app: api-applicants
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-applicants-pod
+  template:
+    metadata:
+      labels:
+        app: api-applicants-pod
+    spec:
+      containers:
+      - name: applicants-container
+        image: salim917/k8s:applicants_salim_image
+        env:
+        - name: ConnectionString
+          value: "Server=service-database;User=sa;Password=Pass@word;Database=dotnetgigs.applicants;"
+        - name: HostRabbitmq
+          value: service-rabittmq.default
+        - name: RABBIMQ_USERNAME
+          value: guest
+        - name: RABBIMQ_PASSWORD
+          value: guest 
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "0.5"
+          limits:
+            memory: "1500Mi"
+            cpu: "1"
+      restartPolicy: Always
+    env:
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-api-applicants
+spec:
+  selector:
+    app: api-applicants-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

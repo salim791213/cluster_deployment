@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-identity-deployment
+  labels:
+    app: api-identity
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-identity-pod
+  template:
+    metadata:
+      labels:
+        app: api-identity-pod
+    spec:
+      containers:
+      - name: service-api-identity
+        image: salim917/k8s:identity_salim_image
+        ports:
+        - containerPort: 80
+        env:
+        - name: RedisHost
+          value: "service-user-data:6379"
+        - name: HostRabbitmq
+          value: service-rabittmq
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "0.5"
+          limits:
+            memory: "1500Mi"
+            cpu: "1"
+      restartPolicy: Always
+   
+     
+     
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-api-identity
+spec:
+  selector:
+    app: api-identity-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

@@ -1,0 +1,51 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+  labels:
+    app: web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-pod
+  template:
+    metadata:
+      labels:
+        app: web-pod
+    spec:
+      containers:
+      - name: web-container
+        image: salim917/k8s:web_salim_image
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "0.5"
+          limits:
+            memory: "1500Mi"
+            cpu: "1"
+        env:
+          - name: APSNETCORE_ENVIRONMENT
+            value: Development
+        # - name:  identity
+        #   value: srv-api-identity
+        # - name: jobs
+        #   value: srv-api-jobs
+---     
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-web
+spec:
+  selector:
+    app: web-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

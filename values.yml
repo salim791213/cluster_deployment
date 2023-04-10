@@ -1,0 +1,21 @@
+kube-state-metrics:
+  tolerations:
+   - key: CriticalAddonsOnly
+     operator: Exists
+
+prometheus-node-exporter:
+  tolerations:
+   - key: CriticalAddonsOnly
+     operator: Exists
+
+prometheus:
+  prometheusSpec:
+    tolerations:
+      - key: CriticalAddonsOnly
+        operator: Exists
+grafana:
+  sidecar:
+    dashboards:
+      provider:
+        allowUiUpdates: true
+        disableDelete: false

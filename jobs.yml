@@ -1,0 +1,54 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-jobs-deployment
+  labels:
+    app: api-jobs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-jobs-pod
+  template:
+    metadata:
+      labels:
+        app: api-jobs-pod
+    spec:
+      containers:
+      - name: service-api-jobs
+        image: salim917/k8s:jobs_salim_image
+        env:
+        - name: ConnectionString
+          value: "Server=service-database.default;User=sa;Password=Pass@word;Database=dotnetgigs.jobs;"
+        - name: HostRabbitmq
+          value: service-rabittmq
+        
+       
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "500Mi"
+            cpu: "0.5"
+          limits:
+            memory: "1500Mi"
+            cpu: "1"
+      restartPolicy: Always
+
+      
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-api-jobs
+spec:
+  selector:
+    app: api-jobs-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP

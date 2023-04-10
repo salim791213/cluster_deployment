@@ -1,0 +1,48 @@
+C:\Users\ksalim\Downloads\projects_kube\k8sapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabitmq-deployment
+  labels:
+    app: rabitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabitmq-pod
+  template:
+    metadata:
+      labels:
+        app: rabitmq-pod
+    spec:
+      containers:
+      - name: rabitmq
+        image: rabbitmq:3-management
+        ports:
+        - containerPort: 5672
+        - containerPort: 15672
+        env:
+          - name: RABBIMQ_DEFAULT_USER
+            value: guest
+          - name: RABBIMQ_DEFAULT_PASSWORD
+            value: guest 
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-rabittmq
+spec:
+  selector:
+    app: rabitmq-pod
+  ports:
+    - name: port5672
+      protocol: TCP
+      port: 5672
+      targetPort: 5672
+    - name: port15672
+      protocol: TCP
+      port: 15672
+      targetPort: 15672
+  type: ClusterIP
+
+
